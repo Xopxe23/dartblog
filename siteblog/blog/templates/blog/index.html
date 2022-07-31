@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{ title }} :: {{ block.super }} {% endblock %}
+
+{% block content %}
+<section class="bg-text-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="bg-text">
+                            <h3>George Duday</h3>
+                            <p>Hello everyone, my name is George Dudaev, I'm from Russia. <br> I want to be Python developer. It's my first site on Django, News Blog. </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+<section class="blog-post-area">
+            <div class="container">
+                <div class="row">
+                    <div class="blog-post-area-style">
+                            <div class="col-md-12">
+                                <div class="single-post-big">
+                                    <div class="big-image">
+                                        <img src="https://cdn.iz.ru/sites/default/files/styles/1065xh/public/photo_item-2022-06/photo_2022-06-06_21-40-51.jpg?itok=806xRTI8" alt="">
+                                    </div>
+                                    <div class="big-text">
+                                        <h3><a href="#">Айтишникам просят оплачивать до 50% аренды</a></h3>
+                                        <p>Льготы для программистов предложили распространить на IT-специалистов, работающих во всех компаниях, а не только в продающих ПО. Такое предложение госкорпорация «Ростех» направила в Минцифры. «Известия» ознакомились с документом. При этом список мер призвали расширить — например, компенсировать айтишникам до половины затрат на аренду жилья и установить минимальную зарплату, гарантированную государством.
+                                        Также госкорпорация предложила дополнить и список компаний, получающих льготы, включив в него поставщиков ПО и софта, обучающие центры, системных интеграторов, структуры, занимающиеся научными разработками. Эксперты считают такие меры позитивными для IT-специалистов, работающих в непрофильных компаниях. Но с точки зрения развития отрасли инициатива спорная, добавили участники рынка.</p>
+                                        <h4><span class="date">25 Июля 2022</span><span class="author">Posted By: <span class="author-name">George Duday</span></span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% for post in posts %}
+                            <div class="col-md-3">
+                                <div class="single-post">
+                                    {% if post.photo %}
+                                    <img src="{{post.photo.url}}" alt="{{post.title}}">
+                                    {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:+3 %}
+                                    <img src="https://img.freepik.com/premium-vector/red-circle-prohibit-symbol-empty-road-sign_543062-92.jpg?w=740" alt="" width="201">
+                                    {% endif %}
+                                    <h3><a href="{{ post.get_absolute_url }}">{{post.title}}</a></h3>
+                                    <h4><span>Posted By: <span class="author-name">{{ post.author }}</span></span>
+                                    </h4>
+                                    <p>{{post.content|truncatewords_html:20|safe}}</p>
+                                    <h4><span>{{ post.created_at|date:"j E Y"}}</span></h4>
+                                </div>
+                            </div>
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+    {% if page_obj.has_other_pages %}
+            <div class="pegination">
+                <div class="nav-links">
+                    {% for p in page_obj.paginator.page_range %}
+                        {% if page_obj.number == p %}
+                        <span class="page-numbers current"> {{ p }}</span>
+                        {% else %}
+                        <a class="page-numbers" href="?page={{p}}">{{ p }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <a class="page-numbers" href="?page={{ page_obj.next_page_number}}"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+    {% endif%}
+        </section>
+{% endblock %}
